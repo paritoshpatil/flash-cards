@@ -4,12 +4,23 @@ import Deck from "./models/Deck";
 
 const PORT = 5000;
 
-mongoose.set("strictQuery", false);
-
 const app = express();
+mongoose.set("strictQuery", false);
+app.use(express.json());
+
+// Endpoints
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
+});
+
+app.post("/decks", async (req: Request, res: Response) => {
+  console.log(req.body);
+  const newDeck = new Deck({
+    title: req.body.title,
+  });
+  const createdDeck = await newDeck.save();
+  res.send(createdDeck);
 });
 
 mongoose
